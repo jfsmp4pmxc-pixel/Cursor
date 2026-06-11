@@ -1,1 +1,9 @@
-
+Package: com.yourname.cursorbeta
+Name: Cursor Project Beta
+Depends: mobilesubstrate, firmware (>= 14.0)
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Bản Beta 1.0 - Con trỏ di chuyển bằng cử chỉ vuốt hỗ trợ inject ứng dụng.
+Maintainer: YourName
+Author: YourName
+Section: Tweaks
