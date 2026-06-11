@@ -66,7 +66,7 @@
     };
 
     // Đặt tỉ lệ scale (2 có nghĩa là phóng to mỗi pixel thành ô vuông 2x2 để nhìn rõ trên màn hình Retina)
-    int scale_factor = 2; 
+    int scale_factor = 4; 
     CGSize size = CGSizeMake(CURSOR_W * scale_factor, CURSOR_H * scale_factor);
     
     UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
@@ -82,9 +82,9 @@
             
             if (pixel == 0) continue; // 0: Trong suốt
             
-            if (pixel == 1) {
+            if (pixel == 2) {
                 [[UIColor blackColor] setFill]; // 1: Viền đen
-            } else if (pixel == 2) {
+            } else if (pixel == 1) {
                 [[UIColor whiteColor] setFill]; // 2: Ruột trắng
             }
             
