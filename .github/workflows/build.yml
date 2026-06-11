@@ -5,7 +5,7 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
-  workflow_dispatch: # Cho phép nhấn nút tự build thủ công trên GitHub UI
+  workflow_dispatch: # Cho phép nhấn nút tự build thủ công trên giao diện GitHub
 
 jobs:
   build:
@@ -17,17 +17,19 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Cài đặt Dependencies & Theos Môi trường
+    - name: Cài đặt Dependencies & Môi trường Theos
       run: |
         sudo apt-get update
         sudo apt-get install -y fakeroot build-essential git perl libssl-dev libio-compress-perl
-        # Cài đặt phiên bản Theos mới nhất vào thư mục nhà của runner
+        # Cài đặt phiên bản Theos mới nhất
         bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
         echo "THEOS=/home/runner/theos" >> $GITHUB_ENV
 
     - name: Tải iOS SDK cho Theos
       run: |
-        # Clone kho SDK chuẩn của cộng đồng iOS vào thư mục sdks của Theos
+        # Xóa thư mục sdks mặc định do script tạo ra để tránh lỗi git clone (exit code 128)
+        rm -rf /home/runner/theos/sdks
+        # Tiến hành clone bộ SDK chuẩn từ kho của cộng đồng
         git clone --depth=1 https://github.com/theos/sdks.git /home/runner/theos/sdks
 
     - name: Tiến hành Biên dịch (Build Tweak)
