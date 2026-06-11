@@ -1,0 +1,43 @@
+name: Build Cursor Beta 1.0
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Cho phép nhấn nút tự build thủ công trên GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout mã nguồn
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Cài đặt Dependencies & Theos Môi trường
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y fakeroot build-essential git perl libssl-dev libio-compress-perl
+        # Cài đặt phiên bản Theos mới nhất vào thư mục nhà của runner
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+        echo "THEOS=/home/runner/theos" >> $GITHUB_ENV
+
+    - name: Tải iOS SDK cho Theos
+      run: |
+        # Clone kho SDK chuẩn của cộng đồng iOS vào thư mục sdks của Theos
+        git clone --depth=1 https://github.com/theos/sdks.git /home/runner/theos/sdks
+
+    - name: Tiến hành Biên dịch (Build Tweak)
+      run: |
+        export THEOS=/home/runner/theos
+        # Lệnh make package của Theos sẽ tự đóng gói thành file .deb trong thư mục packages/
+        make package FINALPACKAGE=1
+
+    - name: Tải sản phẩm (.deb) lên Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: CursorBeta-1.0-Output
+        path: packages/*.deb
