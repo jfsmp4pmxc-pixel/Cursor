@@ -60,7 +60,7 @@
         {0,0,0,0,0,0,0,0,0,1,1,0,0,0},
     };
 
-    int scale_factor = 2; // Bạn có thể tăng lên 3 nếu muốn con trỏ to hơn nữa
+    int scale_factor = 1; // Bạn có thể tăng lên 3 nếu muốn con trỏ to hơn nữa
     CGSize size = CGSizeMake(CURSOR_W * scale_factor, CURSOR_H * scale_factor);
     
     UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
